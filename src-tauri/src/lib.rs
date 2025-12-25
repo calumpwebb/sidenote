@@ -1,6 +1,7 @@
 mod commands;
 
 use std::path::PathBuf;
+use tauri::Emitter;
 
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
@@ -43,7 +44,8 @@ pub fn run() {
             greet,
             commands::get_file_tree,
             commands::read_file,
-            commands::write_file
+            commands::write_file,
+            commands::watch_file
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

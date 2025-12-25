@@ -1,6 +1,10 @@
 use serde::{Deserialize, Serialize};
 use std::fs;
 use std::path::PathBuf;
+use notify::{Watcher, RecursiveMode, RecommendedWatcher, Config, Event, EventKind};
+use std::sync::mpsc::channel;
+use std::thread;
+use tauri::Emitter;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct FileNode {
@@ -95,4 +99,39 @@ pub fn read_file(path: String) -> Result<String, String> {
 pub fn write_file(path: String, content: String) -> Result<(), String> {
     fs::write(&path, content)
         .map_err(|e| format!("Failed to write file: {}", e))
+}
+
+#[tauri::command]
+pub fn watch_file(app_handle: tauri::AppHandle, path: String) -> Result<(), String> {
+    let (tx, rx) = channel();
+
+    // Create a watcher
+    let mut watcher = RecommendedWatcher::new(
+        move |res: Result<Event, notify::Error>| {
+            if let Ok(event) = res {
+                let _ = tx.send(event);
+            }
+        },
+        Config::default(),
+    ).map_err(|e| format!("Failed to create watcher: {}", e))?;
+
+    // Watch the file
+    let watch_path = PathBuf::from(&path);
+    watcher.watch(&watch_path, RecursiveMode::NonRecursive)
+        .map_err(|e| format!("Failed to watch file: {}", e))?;
+
+    // Spawn a thread to listen for events
+    thread::spawn(move || {
+        // Keep watcher alive
+        let _watcher = watcher;
+
+        for event in rx {
+            // Only emit on modify events
+            if matches!(event.kind, EventKind::Modify(_)) {
+                let _ = app_handle.emit("file-changed", path.clone());
+            }
+        }
+    });
+
+    Ok(())
 }

@@ -7,6 +7,8 @@ import { AnnotationThread } from "./AnnotationThread";
 import { MarkdownEditor } from "./MarkdownEditor";
 import { EditorToolbar } from "./EditorToolbar";
 import { useAutoSave } from "../hooks/useAutoSave";
+import { useFileWatch } from "../hooks/useFileWatch";
+import { useKeyboardShortcuts } from "../hooks/useKeyboardShortcuts";
 import {
   parseAnnotations,
   updateAnnotation,
@@ -15,14 +17,43 @@ import {
 import { Button } from "./ui/button";
 
 export function ContentArea() {
-  const { currentFilePath, content, isLoading, error, mode, setContent } =
-    useEditorStore();
+  const {
+    currentFilePath,
+    content,
+    isLoading,
+    error,
+    mode,
+    isDirty,
+    setContent,
+    setMode,
+    saveFile,
+    openFile,
+  } = useEditorStore();
   const { setAnnotations, annotations } = useAnnotationStore();
   const editorRef = useRef<HTMLTextAreaElement>(null);
   const [threadOpen, setThreadOpen] = useState(false);
 
   // Enable auto-save
   useAutoSave();
+
+  // Enable file watching
+  useFileWatch({
+    filePath: currentFilePath,
+    isDirty,
+    onFileChanged: () => {
+      if (currentFilePath) {
+        openFile(currentFilePath);
+      }
+    },
+  });
+
+  // Enable keyboard shortcuts
+  useKeyboardShortcuts({
+    onSave: saveFile,
+    onToggleMode: () => {
+      setMode(mode === "view" ? "edit" : "view");
+    },
+  });
 
   // Parse annotations when content changes
   useEffect(() => {
