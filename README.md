@@ -1,7 +1,23 @@
-# Tauri + React + Typescript
+# Sidenote
 
-This template should help get you started developing with Tauri, React and Typescript in Vite.
+A lightweight desktop markdown editor with annotation support, built with Tauri + React.
 
-## Recommended IDE Setup
+## Features
 
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+- Browse and edit markdown files in a folder
+- Live preview with syntax highlighting
+- Annotate text selections with threaded comments
+- Recent projects for quick access
+
+## Development
+
+```bash
+npm install
+npm run tauri dev
+```
+
+## Build
+
+```bash
+npm run tauri build
+```
