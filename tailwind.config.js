@@ -44,8 +44,21 @@ export default {
         },
       },
       fontFamily: {
-        sans: ["Geist Sans", "sans-serif"],
-        mono: ["Geist Mono", "monospace"],
+        sans: [
+          "Inter",
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "Segoe UI",
+          "Roboto",
+          "sans-serif",
+        ],
+        mono: [
+          "JetBrains Mono",
+          "SF Mono",
+          "Monaco",
+          "Consolas",
+          "monospace",
+        ],
       },
       borderRadius: {
         lg: "var(--radius)",
