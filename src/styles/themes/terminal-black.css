@@ -3,8 +3,8 @@
   --background: 0 0% 0%;
   --foreground: 0 0% 95%;
 
-  /* Green terminal accent */
-  --primary: 142 76% 36%;
+  /* Blue terminal accent */
+  --primary: 217 91% 60%;
   --primary-foreground: 0 0% 100%;
 
   /* Muted tones */
@@ -25,7 +25,7 @@
   /* Borders and inputs */
   --border: 0 0% 15%;
   --input: 0 0% 15%;
-  --ring: 142 76% 36%;
+  --ring: 217 91% 60%;
 
   /* Annotation highlight (yellow/gold) */
   --annotation: 45 93% 47%;

@@ -33,7 +33,7 @@ export function Layout() {
         {rootPath ? (
           <ResizablePanelGroup orientation="horizontal">
             {/* File Tree Panel */}
-            <ResizablePanel defaultSize={25} minSize={15} maxSize={40}>
+            <ResizablePanel defaultSize={30} minSize={20} maxSize={60}>
               <FileTree />
             </ResizablePanel>
 
