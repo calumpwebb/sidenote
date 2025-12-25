@@ -1,5 +1,6 @@
 import { useEditorStore } from "../stores/editor";
 import { FileText } from "lucide-react";
+import { MarkdownPreview } from "./MarkdownPreview";
 
 export function ContentArea() {
   const { currentFilePath, content, isLoading, error } = useEditorStore();
@@ -35,7 +36,7 @@ export function ContentArea() {
         {currentFilePath}
       </div>
       <div className="prose prose-sm max-w-none">
-        <pre className="whitespace-pre-wrap font-mono text-sm">{content}</pre>
+        <MarkdownPreview content={content} />
       </div>
     </div>
   );

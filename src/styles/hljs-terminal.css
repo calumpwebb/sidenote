@@ -1,0 +1,79 @@
+/* Terminal-inspired syntax highlighting theme for highlight.js */
+/* Matches the terminal-black color scheme */
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 1rem;
+  background: #1a1a1a;
+  color: #e0e0e0;
+  border-radius: 0.375rem;
+}
+
+/* Keywords - using primary green */
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-section,
+.hljs-link {
+  color: #4ade80;
+}
+
+/* Strings - yellow/gold */
+.hljs-string,
+.hljs-title,
+.hljs-name,
+.hljs-type,
+.hljs-attribute,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition,
+.hljs-variable,
+.hljs-template-tag,
+.hljs-template-variable {
+  color: #fbbf24;
+}
+
+/* Comments - muted gray */
+.hljs-comment,
+.hljs-quote,
+.hljs-deletion,
+.hljs-meta {
+  color: #6b7280;
+  font-style: italic;
+}
+
+/* Numbers - cyan */
+.hljs-number {
+  color: #22d3ee;
+}
+
+/* Built-ins, functions - bright blue */
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-function {
+  color: #60a5fa;
+}
+
+/* Classes, tags - orange */
+.hljs-class,
+.hljs-selector-class,
+.hljs-selector-id {
+  color: #fb923c;
+}
+
+/* Regex, escape chars - magenta */
+.hljs-regexp,
+.hljs-subst {
+  color: #e879f9;
+}
+
+/* Emphasis */
+.hljs-emphasis {
+  font-style: italic;
+}
+
+/* Strong */
+.hljs-strong {
+  font-weight: bold;
+}
