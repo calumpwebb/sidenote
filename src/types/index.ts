@@ -21,12 +21,10 @@ export interface Project {
 
 export interface Annotation {
   id: string;
-  filePath: string;
-  content: string;
-  lineNumber?: number;
-  columnNumber?: number;
-  createdAt: Date;
-  updatedAt: Date;
+  selection: string;
+  range: [number, number];
+  comment: string;
+  createdAt: string;
 }
 
 export type EditorMode = "view" | "edit";

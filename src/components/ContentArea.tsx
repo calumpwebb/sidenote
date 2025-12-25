@@ -1,18 +1,36 @@
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useEditorStore } from "../stores/editor";
-import { FileText } from "lucide-react";
-import { MarkdownPreview } from "./MarkdownPreview";
+import { useAnnotationStore } from "../stores/annotations";
+import { FileText, MessageSquare } from "lucide-react";
+import { AnnotatablePreview } from "./AnnotatablePreview";
+import { AnnotationThread } from "./AnnotationThread";
 import { MarkdownEditor } from "./MarkdownEditor";
 import { EditorToolbar } from "./EditorToolbar";
 import { useAutoSave } from "../hooks/useAutoSave";
+import {
+  parseAnnotations,
+  updateAnnotation,
+  removeAnnotation,
+} from "../lib/annotations";
+import { Button } from "./ui/button";
 
 export function ContentArea() {
   const { currentFilePath, content, isLoading, error, mode, setContent } =
     useEditorStore();
+  const { setAnnotations, annotations } = useAnnotationStore();
   const editorRef = useRef<HTMLTextAreaElement>(null);
+  const [threadOpen, setThreadOpen] = useState(false);
 
   // Enable auto-save
   useAutoSave();
+
+  // Parse annotations when content changes
+  useEffect(() => {
+    if (content) {
+      const parsed = parseAnnotations(content);
+      setAnnotations(parsed);
+    }
+  }, [content, setAnnotations]);
 
   const handleFormat = (startSyntax: string, endSyntax?: string) => {
     if (!editorRef.current) return;
@@ -39,6 +57,16 @@ export function ContentArea() {
       const newCursorPos = start + startSyntax.length + selectedText.length;
       textarea.setSelectionRange(newCursorPos, newCursorPos);
     }, 0);
+  };
+
+  const handleEditAnnotation = (id: string, newComment: string) => {
+    const updated = updateAnnotation(content, id, newComment);
+    setContent(updated);
+  };
+
+  const handleDeleteAnnotation = (id: string) => {
+    const updated = removeAnnotation(content, id);
+    setContent(updated);
   };
 
   if (isLoading) {
@@ -71,11 +99,24 @@ export function ContentArea() {
       <EditorToolbar onFormat={handleFormat} />
       {mode === "view" ? (
         <div className="flex-1 p-4 overflow-auto">
-          <div className="mb-4 text-sm text-muted-foreground border-b pb-2">
-            {currentFilePath}
+          <div className="mb-4 flex justify-between items-center border-b pb-2">
+            <span className="text-sm text-muted-foreground">
+              {currentFilePath}
+            </span>
+            {annotations.length > 0 && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setThreadOpen(true)}
+              >
+                <MessageSquare className="h-4 w-4 mr-2" />
+                {annotations.length} Annotation
+                {annotations.length !== 1 ? "s" : ""}
+              </Button>
+            )}
           </div>
           <div className="prose prose-sm max-w-none">
-            <MarkdownPreview content={content} />
+            <AnnotatablePreview content={content} />
           </div>
         </div>
       ) : (
@@ -83,6 +124,14 @@ export function ContentArea() {
           <MarkdownEditor ref={editorRef} />
         </div>
       )}
+
+      <AnnotationThread
+        open={threadOpen}
+        onOpenChange={setThreadOpen}
+        annotations={annotations}
+        onEdit={handleEditAnnotation}
+        onDelete={handleDeleteAnnotation}
+      />
     </div>
   );
 }

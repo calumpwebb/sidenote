@@ -45,15 +45,14 @@ export default {
       },
       fontFamily: {
         sans: [
-          "Inter",
+          "Geist",
           "-apple-system",
           "BlinkMacSystemFont",
           "Segoe UI",
-          "Roboto",
           "sans-serif",
         ],
         mono: [
-          "JetBrains Mono",
+          "Geist Mono",
           "SF Mono",
           "Monaco",
           "Consolas",

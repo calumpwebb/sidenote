@@ -1,22 +1,13 @@
 import { create } from "zustand";
 import { readFile, writeFile } from "../tauri/commands";
 
-export type EditorMode = "view" | "edit" | "annotate";
-
-export interface Annotation {
-  id: string;
-  startLine: number;
-  endLine: number;
-  text: string;
-  createdAt: Date;
-}
+export type EditorMode = "view" | "edit";
 
 interface EditorStore {
   currentFilePath: string | null;
   content: string;
   isDirty: boolean;
   mode: EditorMode;
-  annotations: Annotation[];
   isLoading: boolean;
   error: string | null;
 
@@ -25,8 +16,6 @@ interface EditorStore {
   setContent: (content: string) => void;
   saveFile: () => Promise<void>;
   setMode: (mode: EditorMode) => void;
-  addAnnotation: (annotation: Omit<Annotation, "id" | "createdAt">) => void;
-  removeAnnotation: (id: string) => void;
   clearEditor: () => void;
 }
 
@@ -35,7 +24,6 @@ export const useEditorStore = create<EditorStore>((set, get) => ({
   content: "",
   isDirty: false,
   mode: "view",
-  annotations: [],
   isLoading: false,
   error: null,
 
@@ -48,7 +36,6 @@ export const useEditorStore = create<EditorStore>((set, get) => ({
         content: fileContent,
         isDirty: false,
         isLoading: false,
-        annotations: [], // Reset annotations when opening a new file
       });
     } catch (error) {
       set({
@@ -85,29 +72,11 @@ export const useEditorStore = create<EditorStore>((set, get) => ({
     set({ mode });
   },
 
-  addAnnotation: (annotation) => {
-    const newAnnotation: Annotation = {
-      ...annotation,
-      id: crypto.randomUUID(),
-      createdAt: new Date(),
-    };
-    set((state) => ({
-      annotations: [...state.annotations, newAnnotation],
-    }));
-  },
-
-  removeAnnotation: (id: string) => {
-    set((state) => ({
-      annotations: state.annotations.filter((a) => a.id !== id),
-    }));
-  },
-
   clearEditor: () => {
     set({
       currentFilePath: null,
       content: "",
       isDirty: false,
-      annotations: [],
       error: null,
     });
   },
