@@ -106,7 +106,7 @@ export function FileTree() {
   }
 
   return (
-    <ScrollArea className="h-full min-w-[200px]">
+    <ScrollArea className="h-full w-full">
       <div className="py-2">
         {fileTree.map((node) => (
           <FileTreeNode key={node.path} node={node} />
