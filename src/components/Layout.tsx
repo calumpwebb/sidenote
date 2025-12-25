@@ -26,7 +26,7 @@ export function Layout() {
 
   return (
     <div
-      className="h-screen flex flex-col bg-background"
+      className={`h-screen flex flex-col bg-background ${isResizing ? "select-none cursor-col-resize" : ""}`}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
