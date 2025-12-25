@@ -51,7 +51,7 @@ export function Layout() {
           <>
             {/* Sidebar */}
             <div
-              className="h-full border-r bg-card flex-shrink-0 overflow-hidden"
+              className="h-full border-r bg-background flex-shrink-0 overflow-hidden"
               style={{ width: sidebarWidth }}
             >
               <FileTree />
