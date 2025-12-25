@@ -24,19 +24,19 @@ export function AnnotationPopover({
   onCancel,
 }: AnnotationPopoverProps) {
   const [comment, setComment] = useState("");
-  const [mode, setMode] = useState<"write" | "preview">("write");
+  const [mode, setMode] = useState<"edit" | "preview">("edit");
 
   const handleSubmit = () => {
     if (comment.trim()) {
       onSubmit(comment);
       setComment("");
-      setMode("write");
+      setMode("edit");
     }
   };
 
   const handleCancel = () => {
     setComment("");
-    setMode("write");
+    setMode("edit");
     onCancel();
   };
 
@@ -60,23 +60,23 @@ export function AnnotationPopover({
             <h4 className="font-semibold text-sm">Add Annotation</h4>
             <div className="flex gap-1">
               <Button
-                variant={mode === "write" ? "default" : "ghost"}
-                size="sm"
-                onClick={() => setMode("write")}
-              >
-                Write
-              </Button>
-              <Button
                 variant={mode === "preview" ? "default" : "ghost"}
                 size="sm"
                 onClick={() => setMode("preview")}
               >
                 Preview
               </Button>
+              <Button
+                variant={mode === "edit" ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setMode("edit")}
+              >
+                Edit
+              </Button>
             </div>
           </div>
 
-          {mode === "write" ? (
+          {mode === "edit" ? (
             <Textarea
               value={comment}
               onChange={(e) => setComment(e.target.value)}
