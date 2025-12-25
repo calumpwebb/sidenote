@@ -59,10 +59,12 @@ export function Layout() {
 
             {/* Resize Handle */}
             <div
-              className="w-1 h-full bg-border hover:bg-primary cursor-col-resize flex items-center justify-center flex-shrink-0 transition-colors"
+              className="w-px h-full bg-border hover:bg-primary cursor-col-resize flex items-center justify-center flex-shrink-0 transition-colors relative"
               onMouseDown={handleMouseDown}
             >
-              <GripVertical className="w-3 h-3 text-muted-foreground" />
+              <div className="absolute z-10 flex h-4 w-3 items-center justify-center rounded-sm border bg-border hover:bg-primary transition-colors">
+                <GripVertical className="h-2.5 w-2.5 text-muted-foreground" />
+              </div>
             </div>
 
             {/* Content */}
