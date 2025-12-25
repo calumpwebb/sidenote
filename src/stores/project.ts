@@ -32,7 +32,7 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
   },
 
   loadFileTree: async (path: string) => {
-    set({ isLoading: true, error: null });
+    set({ isLoading: true, error: null, rootPath: path });
     try {
       const tree = await getFileTree(path);
       set({ fileTree: tree, isLoading: false });
@@ -41,6 +41,7 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
         error: error instanceof Error ? error.message : "Failed to load file tree",
         isLoading: false,
         fileTree: [],
+        rootPath: null,
       });
     }
   },
